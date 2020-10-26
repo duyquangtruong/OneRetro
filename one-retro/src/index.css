@@ -1,0 +1,7 @@
+.boardItems {
+  margin: 10px;
+}
+.boardList {
+  display: flex;
+  flex-wrap: wrap;
+}
