@@ -1,13 +1,16 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
 
-var usersRouter = require("./routes/users");
-var boards = require("./routes/boards/index");
+const usersRouter = require("./routes/users");
 
-var app = express();
+const mongoose = require("mongoose");
+const Uri =
+  "mongodb+srv://admin:admin@duycluster.mybdc.mongodb.net/OneRetroDB?retryWrites=true&w=majority";
+
+const app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -20,7 +23,32 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/users", usersRouter);
-app.use("/boards", boards);
+app.use("/boards", require("./routes/boards/index"));
+app.use(require("cors"));
+
+//Create connection to database
+const connectDatabase = () => {
+  mongoose.set("useCreateIndex", true);
+  mongoose.connect(
+    Uri,
+    {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    },
+    (err) => {
+      if (err) {
+        console.log(
+          "Failed to connect to Database, retrying in 2 seconds",
+          err
+        );
+        // setTimeout(connectDatabase, 2000);
+      } else {
+        console.log("Connect Successfully !");
+      }
+    }
+  );
+};
+connectDatabase();
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

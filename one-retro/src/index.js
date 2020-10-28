@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Button, Card, Navbar, ListGroup } from "react-bootstrap";
 import logo from "./images/logo.png";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+const Api = "http://localhost:3001/boards";
 
 function App() {
   return (
@@ -11,7 +12,9 @@ function App() {
       <div>
         <Header />
       </div>
-      <div>
+      <div className="page-content">
+        <h1>Your Boards</h1>
+        <hr />
         <RetroList />
       </div>
     </div>
@@ -19,7 +22,7 @@ function App() {
 }
 
 function Header() {
-  return (
+  Date.return(
     <div>
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="#home">
@@ -38,31 +41,43 @@ function Header() {
 }
 
 function RetroList() {
-  const createCard = <div></div>;
-  const card = (
-    <Card style={{ width: "18rem" }}>
-      <Card.Body>
-        <Card.Title>Card Title</Card.Title>
-        <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
-      </Card.Body>
-    </Card>
-  );
+  const [boards, setBoards] = useState([]);
+
+  function fetchUrl() {
+    fetch(Api, {
+      mode: "cors",
+    })
+      .then((res) => res.json())
+      .then((res) => setBoards(res))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    fetchUrl();
+  }, []);
+
+  const createBoard = <div></div>;
+  const boardList = boards.map((board) => {
+    return (
+      <div className="boardItems">
+        <Card style={{ width: "18rem" }}>
+          <Card.Body>
+            <Card.Title>{board.name}</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </Card.Text>
+            <Button variant="primary">Detail</Button>
+          </Card.Body>
+        </Card>
+      </div>
+    );
+  });
   return (
     <div>
-      <div className="boardList">
-        <div className="boardItems">{card}</div>
-        <div className="boardItems">{card}</div>
-        <div className="boardItems">{card}</div>
-        <div className="boardItems">{card}</div>
-        <div className="boardItems">{card}</div>
-        <div className="boardItems">{card}</div>
-        <div className="boardItems">{card}</div>
-        <div className="boardItems">{card}</div>
-      </div>
+      <div className="boardList">{boardList}</div>
     </div>
   );
 }
