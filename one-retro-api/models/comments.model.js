@@ -7,6 +7,7 @@ const commentSchema = new Schema(
       minlength: 1,
       required: true,
     },
+    cardBelongTo: Schema.Types.ObjectId,
     createdAt: { type: Number, default: Date.now() },
     createdBy: Schema.Types.ObjectId, // user id
   },

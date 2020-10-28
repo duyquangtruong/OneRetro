@@ -10,6 +10,7 @@ const boardSchema = new Schema(
     },
     discription: {
       type: String,
+      maxlength: 255,
     },
     createdAt: {
       type: Date,
