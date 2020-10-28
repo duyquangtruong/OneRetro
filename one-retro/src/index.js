@@ -4,7 +4,7 @@ import { Button, Card, Navbar, ListGroup } from "react-bootstrap";
 import logo from "./images/logo.png";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-const Api = "http://localhost:3001/boards";
+const Api = "https://duyquangtruong-oneretro.herokuapp.com/boards";
 
 function App() {
   return (
