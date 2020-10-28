@@ -13,7 +13,7 @@ function App() {
         <Header />
       </div>
       <div className="page-content">
-        <h1>Your Boards</h1>
+        <h3>My Boards</h3>
         <hr />
         <RetroList />
       </div>
@@ -22,7 +22,7 @@ function App() {
 }
 
 function Header() {
-  Date.return(
+  return (
     <div>
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="#home">
