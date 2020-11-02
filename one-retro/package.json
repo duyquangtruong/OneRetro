@@ -1,5 +1,5 @@
 {
-  "homepage": "https://duyquangtruong.github.io/OneRetro",
+  "homepage": "https://duyquangtruong.github.io/login",
   "name": "one-retro",
   "version": "0.1.0",
   "private": true,
@@ -12,6 +12,7 @@
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "web-vitals": "^0.2.4"
   },
