@@ -12,70 +12,52 @@ const ERRORMESSAGE_WRONG_PASSWORD = "Wrong password !";
 const API = "http://localhost:3001/login";
 
 function Login() {
+  const [status, setStatus] = useState({
+    isFetched: false,
+    isShowModal: false,
+  });
   const [submitInfo, setSubmitInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
-  const [showModal, setShowModal] = useState(false);
+  const [isFetch, setIsFetch] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {
-    fetchUrl();
-  }, [submitInfo]);
-
-  function fetchUrl() {
-    if (Object.keys(submitInfo).length === 0) {
-      return;
-    }
-
-    fetch(API, {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: submitInfo.username,
-        password: submitInfo.password,
-        isRemember: submitInfo.isRemember,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => setUserInfo(data));
-  }
-
-  function handleSubmit(event) {
-    const form = event.currentTarget;
-    let userName = form.username.value;
-    let passWord = form.password.value;
-    let isRemember = form.isRemember.value;
-
-    setSubmitInfo({
-      username: userName,
-      password: passWord,
-      isRemember: isRemember,
-    });
-
-    if (
-      Object.keys(userInfo).length === 0 ||
-      Object.keys(userInfo).some((k) => k === "error")
-    ) {
-      event.preventDefault();
-
-      if (userInfo.error === ERRORCODE_INVALID_USERNAME) {
-        setErrorMessage(ERRORMESSAGE_INVALID_USERNAME);
-      } else {
-        setErrorMessage(ERRORMESSAGE_WRONG_PASSWORD);
+  useEffect(async () => {
+    if (status.isFetched) {
+      await fetch(API, {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: submitInfo.username,
+          password: submitInfo.password,
+          isRemember: submitInfo.isRemember,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setUserInfo(data);
+          console.log(data);
+        });
+      if (
+        Object.keys(userInfo).length === 0 ||
+        Object.keys(userInfo).some((k) => k === "error")
+      ) {
+        if (userInfo.error === ERRORCODE_INVALID_USERNAME) {
+          setErrorMessage(ERRORMESSAGE_INVALID_USERNAME);
+        } else {
+          setErrorMessage(ERRORMESSAGE_WRONG_PASSWORD);
+        }
+        setStatus({ isFetched: false, isShowModal: true });
       }
-      setShowModal(true);
-      return false;
     }
-
-    return true;
-  }
+  }, [status.isFetched]);
 
   return (
     <div>
       <div>
-        <Modal show={showModal}>
+        <Modal show={status.isShowModal}>
           <Modal.Dialog>
             <Modal.Header closeButton>
               <Modal.Title>Login Error</Modal.Title>
@@ -87,7 +69,7 @@ function Login() {
               <Button
                 variant="primary"
                 onClick={() => {
-                  setShowModal(false);
+                  setStatus({ isFetched: false, isShowModal: false });
                 }}
               >
                 Close
@@ -103,7 +85,18 @@ function Login() {
         <div className="d-flex justify-content-center mt-4">
           <Card style={{ width: "50%" }}>
             <Card.Body>
-              <Form onSubmit={handleSubmit} action="/boards">
+              <Form
+                onSubmit={(e) => {
+                  setStatus({ isFetched: true, isShowModal: false });
+                  setSubmitInfo({
+                    username: e.currentTarget.username.value,
+                    password: e.currentTarget.password.value,
+                    isRemember: e.currentTarget.isRemember.value,
+                  });
+                  e.preventDefault();
+                }}
+                action="/boards"
+              >
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Username</Form.Label>
                   <Form.Control
