@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import { Button, Card, Navbar, ListGroup } from "react-bootstrap";
-import logo from "../../images/logo.png";
+import { Button, Card, Navbar, Nav } from "react-bootstrap";
+import Header from "../header/header";
 import "./boards.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-const Api = "https://duyquangtruong-oneretro.herokuapp.com/boards";
+
+const API = "https://duyquangtruong-oneretro.herokuapp.com/boards";
 
 function Boards() {
   return (
     <div>
-      <div>
-        <Header />
-      </div>
+      <Header />
       <div className="page-content">
         <h3>My Boards</h3>
         <hr />
@@ -21,30 +19,11 @@ function Boards() {
   );
 }
 
-function Header() {
-  return (
-    <div>
-      <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#home">
-          <img
-            alt=""
-            src={logo}
-            width="35"
-            height="35"
-            className="d-inline-block align-top"
-          />{" "}
-          OneRetro
-        </Navbar.Brand>
-      </Navbar>
-    </div>
-  );
-}
-
 function RetroList() {
   const [boards, setBoards] = useState([]);
 
   function fetchUrl() {
-    fetch(Api, {
+    fetch(API, {
       mode: "cors",
     })
       .then((res) => res.json())
