@@ -56,7 +56,7 @@ function RetroList() {
 
   useEffect(() => {
     fetchUrl();
-  }, []);
+  }, [boards]);
 
   const createBoard = <div></div>;
   const boardList = boards.map((board) => {
