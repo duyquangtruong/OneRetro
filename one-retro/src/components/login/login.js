@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Card, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useHistory } from "react-router-dom";
 
 const ERRORCODE_INVALID_USERNAME = 400;
 const ERRORCODE_WRONG_PASSWORD = 401;
@@ -18,8 +19,8 @@ function Login() {
   });
   const [submitInfo, setSubmitInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
-  const [isFetch, setIsFetch] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const history = useHistory();
 
   useEffect(async () => {
     if (status.isFetched) {
@@ -38,8 +39,12 @@ function Login() {
         .then((response) => response.json())
         .then((data) => {
           setUserInfo(data);
-          console.log(data);
         });
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (status.isFetched) {
       if (
         Object.keys(userInfo).length === 0 ||
         Object.keys(userInfo).some((k) => k === "error")
@@ -50,9 +55,11 @@ function Login() {
           setErrorMessage(ERRORMESSAGE_WRONG_PASSWORD);
         }
         setStatus({ isFetched: false, isShowModal: true });
+      } else {
+        history.push("/boards");
       }
     }
-  }, [status.isFetched]);
+  }, [userInfo]);
 
   return (
     <div>
