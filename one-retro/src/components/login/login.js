@@ -22,9 +22,9 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
 
-  useEffect(async () => {
+  useEffect(() => {
     if (status.isFetched) {
-      await fetch(API, {
+      fetch(API, {
         mode: "cors",
         method: "POST",
         headers: {
@@ -56,6 +56,7 @@ function Login() {
         }
         setStatus({ isFetched: false, isShowModal: true });
       } else {
+        sessionStorage.setItem("_id", userInfo._id);
         history.push("/boards");
       }
     }

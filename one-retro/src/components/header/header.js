@@ -1,16 +1,23 @@
 import logo from "../../images/logo.png";
+import { useState, useEffect } from "react";
 import avatar from "../../images/avatar.jpeg";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+const GET_USER_API = "http://localhost:3001/users";
 
 function Header() {
-  let userInfo = sessionStorage.getItem("userInfo");
-  userInfo = {
-    name: "Trương Quang Duy",
-    email: "truongquangduy343@gmail.com",
-    username: "duyquangtruong",
-    createdAt: "21/2/2012",
-  };
+  const [userFullname, setUserInfo] = useState({});
+  let userId = sessionStorage.getItem("_id");
+
+  fetch(GET_USER_API, {
+    method: "GET",
+    mode: "cors",
+    body: JSON.stringify({ _id: userId }),
+  })
+    .then((res) => res.json())
+    .then((res) => setUserInfo(res.userFullname));
+
+  useEffect(() => {}, [userFullname]);
+
   return (
     <div>
       <Navbar bg="dark" variant="dark">
@@ -36,7 +43,7 @@ function Header() {
             />
             <NavDropdown
               className="m-auto"
-              title={userInfo.name}
+              title={userFullname}
               id="basic-nav-dropdown"
             >
               <NavDropdown.Item href="/users">Account Info</NavDropdown.Item>

@@ -18,15 +18,10 @@ function Users() {
   const [showModal, setShowModal] = useState(false);
   const [isFetch, setIsFetch] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    name: "Trương Quang Duy",
-    email: "truongquangduy343@gmail.com",
-    username: "user01",
-    createdAt: "21/2/2012",
-  });
+  const [userInfo, setUserInfo] = useState({});
 
-  async function fetchUrl() {
-    await fetch(API, {
+  function fetchUrl() {
+    fetch(API, {
       method: "POST",
       mode: "cors",
       headers: {

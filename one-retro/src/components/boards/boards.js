@@ -5,7 +5,9 @@ import "./boards.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import addIcon from "../../images/add.png";
 
-const API = "https://duyquangtruong-oneretro.herokuapp.com/boards";
+const GET_BOARD_LIST_API =
+  "https://duyquangtruong-oneretro.herokuapp.com/boards";
+const CREATE_BOARD_API = "http://localhost:3001/boards/create";
 
 function Boards() {
   return (
@@ -25,44 +27,56 @@ function RetroList() {
   const [showModal, setShowModal] = useState(false);
   const [createRequest, setCreateRequest] = useState({});
 
-  function handleCreate() {
-    setShowModal(true);
+  function handleCreateSubmit(event) {
+    setCreateRequest({
+      name: event.currentTarget.name.value,
+      description: event.currentTarget.description.value,
+      createdBy: sessionStorage.getItem("_id"),
+      createAt: Date.now(),
+    });
+    setShowModal(false);
   }
 
-  function fetchUrl() {
-    fetch(API, {
+  useEffect(() => {}, showModal);
+
+  useEffect(() => {
+    fetch(GET_BOARD_LIST_API, {
       mode: "cors",
+      method: "GET",
     })
       .then((res) => res.json())
       .then((res) => setBoards(res))
       .catch((err) => {
         console.log(err);
       });
-  }
-
-  useEffect(() => {
-    fetchUrl();
   }, [boards]);
 
   useEffect(() => {
-    fetch(API, {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: createRequest.name,
-        createdBy: createRequest.createdBy,
-        createdAt: createRequest.createdAt,
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => setBoards(res))
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (Object.keys(createRequest).length > 0) {
+      fetch(CREATE_BOARD_API, {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: createRequest.name,
+          description: createRequest.description,
+          createdBy: createRequest.createdBy,
+          createdAt: createRequest.createdAt,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.result === 201) {
+            setBoards(res.boardList);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [createRequest]);
 
   const createBoard = (
     <div
@@ -75,7 +89,7 @@ function RetroList() {
       <img
         src={addIcon}
         style={{ width: "70px", height: "70px" }}
-        onClick={handleCreate}
+        onClick={() => setShowModal(true)}
       ></img>
     </div>
   );
@@ -85,10 +99,7 @@ function RetroList() {
         <Card style={{ width: "18rem" }}>
           <Card.Body>
             <Card.Title>{board.name}</Card.Title>
-            <Card.Text>
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </Card.Text>
+            <Card.Text>{board.description}</Card.Text>
             <Button className="m-auto" variant="primary">
               Detail
             </Button>
@@ -107,12 +118,9 @@ function RetroList() {
 
           <Modal.Body>
             <Form
-              onSubmit={(e) => {
-                setCreateRequest({
-                  name: e.currentTarget.name.value,
-                  createdBy: "duyquangtruong",
-                  createAt: Date.now(),
-                });
+              onSubmit={(event) => {
+                handleCreateSubmit(event);
+                event.preventDefault();
               }}
             >
               <Form.Group controlId="formBasicEmail">
@@ -122,6 +130,13 @@ function RetroList() {
                   name="name"
                   placeholder="Enter board name"
                   required
+                />
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="description"
+                  rows={3}
+                  placeholder="Some description about new board"
                 />
               </Form.Group>
               <Modal.Footer>
