@@ -12,7 +12,8 @@ import {
   Toast,
 } from "react-bootstrap";
 
-const API = "http://localhost:3001/users/update";
+const UPDATE_USERINFO_API = "http://localhost:3001/users/update";
+const GET_USERINFO_API = "http://localhost:3001/users";
 
 function Users() {
   const [showModal, setShowModal] = useState(false);
@@ -20,8 +21,33 @@ function Users() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [userInfo, setUserInfo] = useState({});
 
-  function fetchUrl() {
-    fetch(API, {
+  debugger;
+  function getUserInfo() {
+    fetch(GET_USERINFO_API, {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        _id: sessionStorage.getItem("_id"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.result === 200) {
+          setUserInfo({
+            name: res.userInfo.name,
+            username: res.userInfo.username,
+            email: res.userInfo.email,
+            createdAt: res.userInfo.createdAt,
+          });
+        } else {
+          console.log(res.result);
+        }
+      });
+  }
+
+  function updateUserInfo() {
+    fetch(UPDATE_USERINFO_API, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -37,14 +63,19 @@ function Users() {
       .then((data) => {
         if (data.result === 200) {
           setIsSuccess(true);
+          getUserInfo();
         }
-        console.log(data);
       });
   }
+  useEffect(() => {
+    if (Object.keys(userInfo).length === 0) {
+      getUserInfo();
+    }
+  }, [userInfo]);
 
   useEffect(() => {
     if (isFetch) {
-      fetchUrl();
+      updateUserInfo();
     }
   }, [isFetch]);
 
@@ -60,7 +91,6 @@ function Users() {
     });
 
     setIsFetch(true);
-    fetchUrl();
 
     event.preventDefault();
     setShowModal(false);
@@ -145,7 +175,9 @@ function Users() {
               </Card.Body>
               <ListGroup className="list-group-flush">
                 <ListGroupItem>Email: {userInfo.email}</ListGroupItem>
-                <ListGroupItem>Registerd: {userInfo.createdAt}</ListGroupItem>
+                <ListGroupItem>
+                  Registered: {new Date(userInfo.createdAt).toDateString()}
+                </ListGroupItem>
               </ListGroup>
               <Card.Body>
                 <Card.Link onClick={() => setShowModal(true)}>Edit</Card.Link>
