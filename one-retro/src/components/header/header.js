@@ -11,7 +11,7 @@ function Header() {
   return (
     <div>
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/boards">
           <img
             alt=""
             src={logo}
