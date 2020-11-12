@@ -5,18 +5,8 @@ import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 const GET_USER_API = "http://localhost:3001/users";
 
 function Header() {
-  const [userFullname, setUserInfo] = useState({});
-  let userId = sessionStorage.getItem("_id");
-
-  fetch(GET_USER_API, {
-    method: "GET",
-    mode: "cors",
-    body: JSON.stringify({ _id: userId }),
-  })
-    .then((res) => res.json())
-    .then((res) => setUserInfo(res.userFullname));
-
-  useEffect(() => {}, [userFullname]);
+  const userId = sessionStorage.getItem("_id");
+  const userFullname = sessionStorage.getItem("fullname");
 
   return (
     <div>

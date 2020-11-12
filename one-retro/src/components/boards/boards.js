@@ -5,8 +5,7 @@ import "./boards.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import addIcon from "../../images/add.png";
 
-const GET_BOARD_LIST_API =
-  "https://duyquangtruong-oneretro.herokuapp.com/boards";
+const GET_BOARD_LIST_API = "http://localhost:3001/boards";
 const CREATE_BOARD_API = "http://localhost:3001/boards/create";
 
 function Boards() {
@@ -23,36 +22,55 @@ function Boards() {
 }
 
 function RetroList() {
-  const [boards, setBoards] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [createRequest, setCreateRequest] = useState({});
+  const [boards, setBoards] = useState({
+    isUpdateList: true,
+    boardList: [],
+  });
+  const [createRequest, setCreateRequest] = useState({
+    isShowModal: false,
+    request: {},
+  });
+  const userId = sessionStorage.getItem("_id");
 
   function handleCreateSubmit(event) {
     setCreateRequest({
-      name: event.currentTarget.name.value,
-      description: event.currentTarget.description.value,
-      createdBy: sessionStorage.getItem("_id"),
-      createAt: Date.now(),
+      isShowModal: true,
+      request: {
+        name: event.currentTarget.name.value,
+        description: event.currentTarget.description.value,
+        createdBy: userId,
+      },
     });
-    setShowModal(false);
   }
 
-  useEffect(() => {}, showModal);
-
   useEffect(() => {
-    fetch(GET_BOARD_LIST_API, {
-      mode: "cors",
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((res) => setBoards(res))
-      .catch((err) => {
-        console.log(err);
-      });
+    if (boards.isUpdateList) {
+      fetch(GET_BOARD_LIST_API, {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          createdBy: userId,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          setBoards({ isUpdateList: false, boardList: res });
+        })
+        .catch((err) => {
+          console.log(err);
+          setBoards({ isUpdateList: false, boardList: [] });
+        });
+    }
   }, [boards]);
 
   useEffect(() => {
-    if (Object.keys(createRequest).length > 0) {
+    if (
+      createRequest.isShowModal &&
+      Object.keys(createRequest.request).length !== 0
+    ) {
       fetch(CREATE_BOARD_API, {
         mode: "cors",
         method: "POST",
@@ -60,16 +78,18 @@ function RetroList() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: createRequest.name,
-          description: createRequest.description,
-          createdBy: createRequest.createdBy,
-          createdAt: createRequest.createdAt,
+          name: createRequest.request.name,
+          description: createRequest.request.description,
+          createdBy: createRequest.request.createdBy,
         }),
       })
         .then((res) => res.json())
         .then((res) => {
           if (res.result === 201) {
-            setBoards(res.boardList);
+            setBoards({ isUpdateList: true, boardList: res.boardList });
+            setCreateRequest({ isShowModal: false, request: {} });
+          } else {
+            console.log(res.result);
           }
         })
         .catch((err) => {
@@ -89,11 +109,12 @@ function RetroList() {
       <img
         src={addIcon}
         style={{ width: "70px", height: "70px" }}
-        onClick={() => setShowModal(true)}
+        onClick={() => setCreateRequest({ isShowModal: true, request: {} })}
       ></img>
     </div>
   );
-  const boardList = boards.map((board) => {
+  const list = boards.boardList;
+  const boardList = list.map((board, index) => {
     return (
       <div className="boardItems">
         <Card style={{ width: "18rem" }}>
@@ -111,7 +132,7 @@ function RetroList() {
   return (
     <div>
       <div>
-        <Modal show={showModal}>
+        <Modal show={createRequest.isShowModal}>
           <Modal.Header>
             <Modal.Title className="m-auto">Create Board</Modal.Title>
           </Modal.Header>
@@ -140,7 +161,12 @@ function RetroList() {
                 />
               </Form.Group>
               <Modal.Footer>
-                <Button variant="secondary" onClick={() => setShowModal(false)}>
+                <Button
+                  variant="secondary"
+                  onClick={() =>
+                    setCreateRequest({ isShowModal: false, request: {} })
+                  }
+                >
                   Close
                 </Button>
                 <Button variant="primary" type="submit">

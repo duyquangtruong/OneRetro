@@ -57,6 +57,7 @@ function Login() {
         setStatus({ isFetched: false, isShowModal: true });
       } else {
         sessionStorage.setItem("_id", userInfo._id);
+        sessionStorage.setItem("fullname", userInfo.name);
         history.push("/boards");
       }
     }
