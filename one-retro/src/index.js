@@ -10,12 +10,14 @@ import {
   Link,
   NavLink,
 } from "react-router-dom";
+import BoardDetail from "./components/boards/boardDetail";
 
 function Index() {
   return (
     <Router>
       <div>
         <Route path="/login" exact component={Login} />
+        <Route path="/boards/detail" exact component={BoardDetail} />
         <Route path="/boards" exact component={Boards} />
         <Route path="/users" exact component={Users} />
       </div>
