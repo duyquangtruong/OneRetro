@@ -121,7 +121,13 @@ function RetroList() {
           <Card.Body>
             <Card.Title>{board.name}</Card.Title>
             <Card.Text>{board.description}</Card.Text>
-            <Button className="m-auto" variant="primary">
+            <Button
+              className="m-auto"
+              variant="primary"
+              onClick={() => {
+                window.location = "/boards/detail/" + board._id;
+              }}
+            >
               Detail
             </Button>
           </Card.Body>
