@@ -150,6 +150,7 @@ function CardList() {
                         event.currentTarget.style.height =
                           event.currentTarget.scrollHeight + "px";
                       }}
+                      readOnly
                     >
                       askjdhaskdhawiudhuiwahdiuawdhaiuwhdiawhdiuaw asdas d as da
                       hdiuawhdihawdiuhaiwdhwiaudhaiwudhiuawhdiuwahdiuawhdiuahwdiuhawiudhawidhaiwdhai

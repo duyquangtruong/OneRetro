@@ -18,7 +18,8 @@ function Index() {
       <div>
         <Route path="/login" exact component={Login} />
         <Route path="/boards/detail" exact component={BoardDetail} />
-        <Route path="/boards" path="/" exact component={Boards} />
+        <Route path="/boards" exact component={Boards} />
+        <Route path="/" exact component={Boards} />
         <Route path="/users" exact component={Users} />
       </div>
     </Router>
