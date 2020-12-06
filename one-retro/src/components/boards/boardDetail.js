@@ -79,13 +79,34 @@ function CardList() {
   const wentWellList = wentWellCards.map((card, index) => {
     return (
       <Row className="justify-content-center mb-3">
-        {" "}
-        <Card body style={{ width: "95%" }}>
+        <Card body style={{ width: "95%", height: "auto" }}>
           <Row>
-            <Col sm={11}>{card.content}</Col>
-            <Col sm={1}>
-              <img src={EditButton} style={{ width: "15px" }} />
+            <Col sm={11}>
+              <Row>
+                <textarea
+                  className="contentCard"
+                  onInput={(event) => {
+                    event.currentTarget.style.height =
+                      event.currentTarget.scrollHeight + "px";
+                  }}
+                >
+                  {card.content}
+                </textarea>
+              </Row>
             </Col>
+            <Col sm={1}>
+              <img
+                src={EditButton}
+                className="editButton"
+                onClick={handleEditCard(card._id)}
+              />
+            </Col>
+          </Row>
+          <Row hidden={false} className="mt-2">
+            <Button className="ml-2">Done</Button>
+            <Button variant="danger" className="ml-auto mr-2">
+              Delete
+            </Button>
           </Row>
         </Card>
       </Row>
@@ -95,13 +116,34 @@ function CardList() {
   const toImpoveList = toImproveCards.map((card, index) => {
     return (
       <Row className="justify-content-center mb-3">
-        {" "}
-        <Card body style={{ width: "95%" }}>
+        <Card body style={{ width: "95%", height: "auto" }}>
           <Row>
-            <Col sm={11}>{card.content}</Col>
-            <Col sm={1}>
-              <img src={EditButton} style={{ width: "15px" }} />
+            <Col sm={11}>
+              <Row>
+                <textarea
+                  className="contentCard"
+                  onInput={(event) => {
+                    event.currentTarget.style.height =
+                      event.currentTarget.scrollHeight + "px";
+                  }}
+                >
+                  {card.content}
+                </textarea>
+              </Row>
             </Col>
+            <Col sm={1}>
+              <img
+                src={EditButton}
+                className="editButton"
+                onClick={handleEditCard(card._id)}
+              />
+            </Col>
+          </Row>
+          <Row hidden={false} className="mt-2">
+            <Button className="ml-2">Done</Button>
+            <Button variant="danger" className="ml-auto mr-2">
+              Delete
+            </Button>
           </Row>
         </Card>
       </Row>
@@ -111,13 +153,34 @@ function CardList() {
   const actionItemsList = actionItemsCards.map((card, index) => {
     return (
       <Row className="justify-content-center mb-3">
-        {" "}
-        <Card body style={{ width: "95%" }}>
+        <Card body style={{ width: "95%", height: "auto" }}>
           <Row>
-            <Col sm={11}>{card.content}</Col>
-            <Col sm={1}>
-              <img src={EditButton} style={{ width: "15px" }} />
+            <Col sm={11}>
+              <Row>
+                <textarea
+                  className="contentCard"
+                  onInput={(event) => {
+                    event.currentTarget.style.height =
+                      event.currentTarget.scrollHeight + "px";
+                  }}
+                >
+                  {card.content}
+                </textarea>
+              </Row>
             </Col>
+            <Col sm={1}>
+              <img
+                src={EditButton}
+                className="editButton"
+                onClick={handleEditCard(card._id)}
+              />
+            </Col>
+          </Row>
+          <Row hidden={false} className="mt-2">
+            <Button className="ml-2">Done</Button>
+            <Button variant="danger" className="ml-auto mr-2">
+              Delete
+            </Button>
           </Row>
         </Card>
       </Row>
@@ -136,6 +199,8 @@ function CardList() {
       createdBy: sessionStorage.getItem("_id"),
     });
   }
+
+  function handleEditCard(cardId) {}
 
   let addButtons = [];
   let i;
