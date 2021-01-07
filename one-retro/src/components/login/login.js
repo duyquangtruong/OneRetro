@@ -10,7 +10,7 @@ const ERRORMESSAGE_INVALID_USERNAME =
   "Invalid Username ! \n Please try again or create an account.";
 const ERRORMESSAGE_WRONG_PASSWORD = "Wrong password !";
 
-const API = "http://localhost:3001/login";
+const API = "https://duyquangtruong-oneretro.herokuapp.com/login";
 
 function Login() {
   const [status, setStatus] = useState({

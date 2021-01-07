@@ -2,7 +2,7 @@ import logo from "../../images/logo.png";
 import { useState, useEffect } from "react";
 import avatar from "../../images/avatar.jpeg";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
-const GET_USER_API = "http://localhost:3001/users";
+const GET_USER_API = "https://duyquangtruong-oneretro.herokuapp.com/users";
 
 function Header() {
   const userId = sessionStorage.getItem("_id");

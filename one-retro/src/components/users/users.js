@@ -12,8 +12,9 @@ import {
   Toast,
 } from "react-bootstrap";
 
-const UPDATE_USERINFO_API = "http://localhost:3001/users/update";
-const GET_USERINFO_API = "http://localhost:3001/users";
+const UPDATE_USERINFO_API =
+  "https://duyquangtruong-oneretro.herokuapp.com/users/update";
+const GET_USERINFO_API = "https://duyquangtruong-oneretro.herokuapp.com/users";
 
 function Users() {
   const [showModal, setShowModal] = useState(false);

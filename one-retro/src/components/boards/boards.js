@@ -5,8 +5,10 @@ import "./boards.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import addIcon from "../../images/add.png";
 
-const GET_BOARD_LIST_API = "http://localhost:3001/boards";
-const CREATE_BOARD_API = "http://localhost:3001/boards/create";
+const GET_BOARD_LIST_API =
+  "https://duyquangtruong-oneretro.herokuapp.com/boards";
+const CREATE_BOARD_API =
+  "https://duyquangtruong-oneretro.herokuapp.com/boards/create";
 
 function Boards() {
   return (
