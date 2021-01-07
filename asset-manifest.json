@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/OneRetro/static/css/main.58867b8d.chunk.css",
-    "main.js": "/OneRetro/static/js/main.ad4c6edc.chunk.js",
-    "main.js.map": "/OneRetro/static/js/main.ad4c6edc.chunk.js.map",
+    "main.js": "/OneRetro/static/js/main.0430de4e.chunk.js",
+    "main.js.map": "/OneRetro/static/js/main.0430de4e.chunk.js.map",
     "runtime-main.js": "/OneRetro/static/js/runtime-main.363b9b57.js",
     "runtime-main.js.map": "/OneRetro/static/js/runtime-main.363b9b57.js.map",
     "static/css/2.20aa2d7b.chunk.css": "/OneRetro/static/css/2.20aa2d7b.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.20aa2d7b.chunk.css",
     "static/js/2.12ec67dd.chunk.js",
     "static/css/main.58867b8d.chunk.css",
-    "static/js/main.ad4c6edc.chunk.js"
+    "static/js/main.0430de4e.chunk.js"
   ]
 }
